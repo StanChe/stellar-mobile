@@ -1,53 +1,21 @@
-stellar-mobile
-==============
-For now  we take original stellard readme
-#stellard - Stellar P2P server
-[![Build Status](https://travis-ci.org/stellar/stellard.svg?branch=master)](https://travis-ci.org/stellar/stellard)
+#stellard moblie - Stellar mobile library
 
-This is the repository for Stellar's `stellard`, reference P2P server.
+This is the repository for Stellar's `stellard_mobile`, reference mobile library.
 
-###Build instructions:
-* https://wiki.stellar.org/Building_Stellard
-
-### Vagrant (your very own testnet)
-
-1.  Install vagrant (http://www.vagrantup.com/)
-2.  run `vagrant up`
-3.  There is no step 3.
-
-You now have a running testnet accessible on ports 9001 (websocket) and 9002 (rpc).  It will not connect to other instances and will have it's own ledger set.
-
-NOTE: running `vagrant provision` will reset your ledger, starting you over from scratch
-
-### Repository Contents
-
-#### ./bin
-Scripts and data files for Stellar integrators.
-
-#### ./build
-Intermediate and final build outputs.
-
-#### ./Builds
-Platform or IDE-specific project files.
-
-#### ./doc
-Documentation and example configuration files.
-
-#### ./src
-Source code directory. Some of the directories contained here are
-external repositories inlined via git-subtree, see the corresponding
-README for more details.
-
-#### ./test
-Javascript / Mocha tests.
-
-#### Running tests
-mocha test/*-test.js
-
-
-## License
-Stellar is open source and permissively licensed under the ISC license. See the
-LICENSE file for more details.
+###External dependencies:
+Your system should have libcurl4 and all development libraries needed for Stellard installed. Be sure to install libcurl (OpenSSL).
+To install on Ubuntu run:
+```
+	sudo apt-get install libcurl4-openssl-dev
+```
+###Configuration
+New field «stellard» was added to default stellard configuration file (All request to ledgers will be redirected to this address).
+###Running
+It is recommended to run «stellard for mobile» in standalone mode (command-line argument -a)
+###How it works
+1. Commands like «account_tx», which does not need secret key as argument, are redirected to address specified in «stellard» configuration field.
+2. «Payment», «TrustSet», «OfferCreate», «OfferCancel» commands are performed locally (secret key is not sent to «stellard»), but all operations, like getting sequence or building path for payment, are redirected to «stellard».
+3. «Submit» sends tx_blob to address specified in «stellard» configuration field. 
 
 ###For more information:
 * https://www.stellar.org
