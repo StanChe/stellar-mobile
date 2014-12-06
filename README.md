@@ -19,4 +19,3 @@ It is recommended to run «stellard for mobile» in standalone mode (command-lin
 
 ###For more information:
 * https://www.stellar.org
-* https://wiki.stellar.org
