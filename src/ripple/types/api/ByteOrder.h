@@ -20,7 +20,7 @@
 #ifndef RIPPLE_TYPES_BYTEORDER_H
 #define RIPPLE_TYPES_BYTEORDER_H
 
-#include "../beast/beast/config/PlatformConfig.h"
+#include "../../../beast/beast/config/PlatformConfig.h"
 #include <stdint.h>
 
 namespace ripple {

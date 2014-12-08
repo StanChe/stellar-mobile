@@ -17,14 +17,13 @@
 */
 //==============================================================================
 
-#include "../../beast/beast/unit_test/suite.h"
 #include <sodium.h>
+#include "RippleAddress.h"
 #include "../ripple_data/crypto/StellarPrivateKey.h"
 #include "../ripple_data/crypto/StellarPublicKey.h"
 
 namespace ripple {
 
-SETUP_LOG (RippleAddress)
 
 RippleAddress::RippleAddress ()
     : mIsValid (false)

@@ -35,6 +35,9 @@
 # include <time.h>
 #endif
 #include <fstream>
+#include <assert.h>
+#include <stdint.h>
+#include "../api/RandomNumbers.h"
 
 namespace ripple {
 
@@ -180,7 +183,7 @@ void RandomNumbers::platformAddPerformanceMonitorEntropy ()
     // VFALCO TODO Remove all this fancy stuff
     struct
     {
-        std::int64_t operator () () const
+        int64_t operator () () const
         {
             return time (nullptr);
         }
@@ -193,9 +196,9 @@ void RandomNumbers::platformAddPerformanceMonitorEntropy ()
             struct
             {
                 // VFALCO TODO clean this up
-                std::int64_t operator () () const
+                int64_t operator () () const
                 {
-                    std::int64_t nCounter = 0;
+                    int64_t nCounter = 0;
 #if BEAST_WIN32
                     QueryPerformanceCounter ((LARGE_INTEGER*)&nCounter);
 #else
@@ -208,7 +211,7 @@ void RandomNumbers::platformAddPerformanceMonitorEntropy ()
             } GetPerformanceCounter;
 
             // Seed with CPU performance counter
-            std::int64_t nCounter = GetPerformanceCounter ();
+            int64_t nCounter = GetPerformanceCounter ();
             RAND_add (&nCounter, sizeof (nCounter), 1.5);
             memset (&nCounter, 0, sizeof (nCounter));
         }
@@ -217,7 +220,7 @@ void RandomNumbers::platformAddPerformanceMonitorEntropy ()
     RandAddSeed ();
 
     // This can take up to 2 seconds, so only do it every 10 minutes
-    static std::int64_t nLastPerfmon;
+    static int64_t nLastPerfmon;
 
     if (GetTime () < nLastPerfmon + 10 * 60)
         return;

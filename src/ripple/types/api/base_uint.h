@@ -27,12 +27,13 @@
 
 #include <string.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include "Blob.h"
 #include "strHex.h"
 #include "ByteOrder.h"
     
-#include "../../beast/beast/container/hardened_hash.h"
+#include "../../../beast/beast/container/hardened_hash.h"
 
 #include <functional>
 
@@ -505,14 +506,14 @@ operator!= (base_uint<Bits, Tag> const& a, base_uint<Bits, Tag> const& b)
 //------------------------------------------------------------------------------
 template <std::size_t Bits, class Tag = void>
 bool
-operator== (base_uint<Bits, Tag> const& a, std::uint64_t b)
+operator== (base_uint<Bits, Tag> const& a, uint64_t b)
 {
     return a == base_uint<Bits, Tag>(b);
 }
 
 template <std::size_t Bits, class Tag = void>
 bool
-operator!= (base_uint<Bits, Tag> const& a, std::uint64_t b)
+operator!= (base_uint<Bits, Tag> const& a, uint64_t b)
 {
     return !(a == b);
 }

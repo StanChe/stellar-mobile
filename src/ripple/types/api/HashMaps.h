@@ -20,6 +20,9 @@
 #ifndef RIPPLE_TYPES_HASHMAPS_H_INCLUDED
 #define RIPPLE_TYPES_HASHMAPS_H_INCLUDED
 
+#include "../../../beast/beast/Uncopyable.h"
+#include "../api/RandomNumbers.h"
+
 namespace ripple {
 
 /** Management helper of hash functions used in hash map containers.
@@ -106,7 +109,7 @@ private:
         NonceHolder ()
         {
             // VFALCO NOTE this can be dangerous if T is an object type
-            RandomNumbers::getInstance ().fill (&m_nonce);
+            RandomNumbers::getInstance().fill (&m_nonce);
         }
 
         inline T getNonce () const

@@ -19,19 +19,15 @@
 
 #ifndef RIPPLE_RPC_TRANSACTIONSIGN_H_INCLUDED
 #define RIPPLE_RPC_TRANSACTIONSIGN_H_INCLUDED
+#include "../../rapidjson/include/rapidjson/allocators.h"
+#include "../../Utils/Helper.h"
 
 namespace ripple {
-namespace RPC {
+	namespace RPC {
 
-Json::Value transactionSign (
-    Json::Value jvRequest,
-    bool bSubmit,
-    bool bFailHard,
-    Application::ScopedLockType& mlh,
-    NetworkOPs& netOps,
-    int role);
-
-} // RPC
-} // ripple
-
+		void transactionSign (rapidjson::Value& params, rapidjson::Value& result, rapidjson::MemoryPoolAllocator<>& allocator, bool bFailHard);
+		void autofill_fee(rapidjson::Value& request, rapidjson::Value& result, bool admin);
+		int64_t GetSequence(std::string account);
+	}
+}
 #endif

@@ -23,7 +23,7 @@
 #include <algorithm>
 #include <array>
 
-#include "../../beast/beast/StaticAssert.h"
+#include "../../../beast/beast/StaticAssert.h"
 #include "../../beast/beast/ByteOrder.h"
 #include "../../beast/beast/crypto/Sha256.h"
 

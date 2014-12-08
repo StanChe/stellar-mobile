@@ -25,8 +25,6 @@
 #ifndef RIPPLE_TYPES_UINT160_H_INCLUDED
 #define RIPPLE_TYPES_UINT160_H_INCLUDED
 
-#include <boost/functional/hash.hpp>
-
 #include "base_uint.h"
 #include "strHex.h"
 
@@ -50,16 +48,5 @@ struct hash <ripple::uint160> : ripple::uint160::hasher
 }
 
 //------------------------------------------------------------------------------
-
-namespace boost {
-
-template <>
-struct hash <ripple::uint160> : ripple::uint160::hasher
-{
-    // VFALCO NOTE broken in vs2012
-    //using ripple::uint160::hasher::hasher; // inherit ctors
-};
-
-}
 
 #endif

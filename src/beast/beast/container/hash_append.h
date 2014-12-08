@@ -25,9 +25,6 @@
 
 #include "impl/spookyv2.h"
 
-#if BEAST_USE_BOOST_FEATURES
-#include <boost/shared_ptr.hpp>
-#endif
 
 #include "../utility/noexcept.h"
 #include <array>
@@ -634,16 +631,6 @@ hash_append (Hasher& h, std::shared_ptr<T> const& p) noexcept
 {
     hash_append(h, p.get());
 }
-
-#if BEAST_USE_BOOST_FEATURES
-template <class Hasher, class T>
-inline
-void
-hash_append (Hasher& h, boost::shared_ptr<T> const& p) noexcept
-{
-    hash_append(h, p.get());
-}
-#endif
 
 // variadic hash_append
 

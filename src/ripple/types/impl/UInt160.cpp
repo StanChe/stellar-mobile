@@ -1,3 +1,5 @@
+#include "../api/base_uint.h"
+
 //------------------------------------------------------------------------------
 /*
     This file is part of rippled: https://github.com/ripple/rippled

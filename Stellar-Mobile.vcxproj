@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{702DE2CE-5151-4632-AA68-D765DC1F8B68}</ProjectGuid>
+    <RootNamespace>StellarMobile</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\openssl-build\include;C:\libsodium\include;C:\Program Files\curl-7.39.0\curl-7.39.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\openssl-build\lib;C:\libsodium\Win32\Release\v120\dynamic;C:\Program Files\curl-7.39.0\curl-7.39.0\build\Win32\VC12\DLL Release - DLL OpenSSL;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>BEAST_WIN32;WIN32;_DEBUG;_LIB;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libcurl.lib;libsodium.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\beast\beast\ByteOrder.h" />
+    <ClInclude Include="src\beast\beast\Config.h" />
+    <ClInclude Include="src\beast\beast\config\CompilerConfig.h" />
+    <ClInclude Include="src\beast\beast\config\compiler\Clang.h" />
+    <ClInclude Include="src\beast\beast\config\compiler\Gcc.h" />
+    <ClInclude Include="src\beast\beast\config\compiler\Intel.h" />
+    <ClInclude Include="src\beast\beast\config\compiler\VisualC.h" />
+    <ClInclude Include="src\beast\beast\config\ConfigCheck.h" />
+    <ClInclude Include="src\beast\beast\config\ContractChecks.h" />
+    <ClInclude Include="src\beast\beast\config\PlatformConfig.h" />
+    <ClInclude Include="src\beast\beast\config\platform\Android.h" />
+    <ClInclude Include="src\beast\beast\config\platform\Bsd.h" />
+    <ClInclude Include="src\beast\beast\config\platform\Linux.h" />
+    <ClInclude Include="src\beast\beast\config\platform\MacOS.h" />
+    <ClInclude Include="src\beast\beast\config\platform\Win32.h" />
+    <ClInclude Include="src\beast\beast\config\SelectCompilerConfig.h" />
+    <ClInclude Include="src\beast\beast\config\SelectPlatformConfig.h" />
+    <ClInclude Include="src\beast\beast\config\SelectStdlibConfig.h" />
+    <ClInclude Include="src\beast\beast\config\StandardConfig.h" />
+    <ClInclude Include="src\beast\beast\config\Suffix.h" />
+    <ClInclude Include="src\beast\beast\container\hardened_hash.h" />
+    <ClInclude Include="src\beast\beast\container\hash_append.h" />
+    <ClInclude Include="src\beast\beast\container\impl\spookyv2.h" />
+    <ClInclude Include="src\beast\beast\cxx14\config.h" />
+    <ClInclude Include="src\beast\beast\cxx14\type_traits.h" />
+    <ClInclude Include="src\beast\beast\cxx14\utility.h" />
+    <ClInclude Include="src\beast\beast\StaticAssert.h" />
+    <ClInclude Include="src\beast\beast\Uncopyable.h" />
+    <ClInclude Include="src\beast\beast\utility\meta.h" />
+    <ClInclude Include="src\beast\beast\utility\noexcept.h" />
+    <ClInclude Include="src\beast\beast\Version.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\allocators.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\encodedstream.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\encodings.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\filereadstream.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\filewritestream.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\memorybuffer.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\memorystream.h" />
+    <ClInclude Include="src\ripple\types\api\Base58.h" />
+    <ClInclude Include="src\ripple\types\api\Blob.h" />
+    <ClInclude Include="src\ripple\types\api\ByteOrder.h" />
+    <ClInclude Include="src\ripple\types\api\CryptoIdentifier.h" />
+    <ClInclude Include="src\ripple\types\api\HashMaps.h" />
+    <ClInclude Include="src\ripple\types\api\IdentifierStorage.h" />
+    <ClInclude Include="src\ripple\types\api\IdentifierType.h" />
+    <ClInclude Include="src\ripple\types\api\RippleAccountID.h" />
+    <ClInclude Include="src\ripple\types\api\RippleAccountPrivateKey.h" />
+    <ClInclude Include="src\ripple\types\api\RippleAccountPublicKey.h" />
+    <ClInclude Include="src\ripple\types\api\RipplePrivateKey.h" />
+    <ClInclude Include="src\ripple\types\api\RipplePublicKey.h" />
+    <ClInclude Include="src\ripple\types\api\RipplePublicKeyHash.h" />
+    <ClInclude Include="src\ripple\types\api\SimpleIdentifier.h" />
+    <ClInclude Include="src\ripple\types\api\strHex.h" />
+    <ClInclude Include="src\ripple\types\api\UInt160.h" />
+    <ClInclude Include="src\ripple_basics\utility\StringUtilities.h" />
+    <ClInclude Include="src\ripple_data\protocol\TxFlags.h" />
+    <ClInclude Include="src\Utils\Config.h" />
+    <ClInclude Include="src\Utils\CurlReader.h" />
+    <ClInclude Include="src\Utils\ErrorCategory.h" />
+    <ClInclude Include="src\Utils\Helper.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\document.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\filestream.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\prettywriter.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\rapidjson.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\reader.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\stringbuffer.h" />
+    <ClInclude Include="src\rapidjson\include\rapidjson\writer.h" />
+    <ClInclude Include="src\StellarMobile.h" />
+    <ClInclude Include="src\Utils\JSS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\beast\beast\container\impl\spookyv2.cpp" />
+    <ClCompile Include="src\impl\Submit.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\ripple\types\impl\strHex.cpp" />
+    <ClCompile Include="src\ripple\types\impl\UInt160.cpp" />
+    <ClCompile Include="src\ripple_basics\utility\StringUtilities.cpp" />
+    <ClCompile Include="src\Utils\Config.cpp" />
+    <ClCompile Include="src\Utils\CurlReader.cpp" />
+    <ClCompile Include="src\Utils\ErrorCategory.cpp" />
+    <ClCompile Include="src\Utils\Helper.cpp" />
+    <ClCompile Include="src\impl\StellarMobile.cpp" />
+    <ClCompile Include="src\Utils\JSS.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cacert.pem" />
+    <None Include="stellar-mobile.cfg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
