@@ -15,8 +15,10 @@ namespace stellar_mobile
 	class Helper
 	{
 			static std::string StringFormat(char* buff, std::string format, const char* param1);
+			static std::vector<std::string> & Helper::split(const std::string &s, std::string& delims, int index, std::vector<std::string> &elems);
 		public:
 			static std::string AsString(rapidjson::Document& d);
+			static std::vector<std::string> Helper::split(const std::string &s, std::string delims);
 			static std::string StringFormat(std::string format, std::string* params, __int32 paramsNum);
 			static std::string replace(char c, std::string replacement, std::string const& s);
 			static void split(const std::string& s, char delim, std::vector<std::string>& elems);

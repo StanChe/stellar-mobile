@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <cstdint>
 
 namespace stellar_mobile
 {
@@ -22,6 +23,7 @@ namespace stellar_mobile
 			Data();
 			static std::string StellardAddress;
 			static const char* CONFIG_FILE_NAME;
+			static std::uint32_t SIGN_TRANSACTION;
 		};
 		static Data DataContainer;
 	};

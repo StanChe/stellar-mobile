@@ -17,49 +17,47 @@
 */
 //==============================================================================
 
-#include "../api/strHex.h"
-
 namespace ripple {
 
-	char charHex (int iDigit)
-	{
-		if (iDigit >= 0)
-		{
-			if(iDigit < 10)
-				return '0' + iDigit;
-			if(iDigit < 16)
-				return 'A' - 10 + iDigit;
-		}
+char charHex (int iDigit)
+{
+    if (iDigit >= 0)
+    {
+        if(iDigit < 10)
+            return '0' + iDigit;
+        if(iDigit < 16)
+            return 'A' - 10 + iDigit;
+    }
     
-		return 0;
-	}
+    return 0;
+}
 
-	int charUnHex (char cDigit)
-	{
-		struct HexTab
-		{
-			int hex[256];
+int charUnHex (char cDigit)
+{
+    struct HexTab
+    {
+        int hex[256];
 
-			HexTab ()
-			{
-				std::fill (std::begin (hex), std::end (hex), -1);
-				for (int i = 0; i < 10; ++i)
-					hex ['0'+i] = i;
-				for (int i = 0; i < 6; ++i)
-				{
-					hex ['A'+i] = 10 + i;
-					hex ['a'+i] = 10 + i;
-				}
-			}
-			int operator[] (int i) const
-			{
-			   return hex[i];
-			}
-		};
+        HexTab ()
+        {
+            std::fill (std::begin (hex), std::end (hex), -1);
+            for (int i = 0; i < 10; ++i)
+                hex ['0'+i] = i;
+            for (int i = 0; i < 6; ++i)
+            {
+                hex ['A'+i] = 10 + i;
+                hex ['a'+i] = 10 + i;
+            }
+        }
+        int operator[] (int i) const
+        {
+           return hex[i];
+        }
+    };
 
-		static HexTab xtab;
+    static HexTab xtab;
     
-		return xtab[cDigit];
-	}
+    return xtab[cDigit];
+}
 
 }

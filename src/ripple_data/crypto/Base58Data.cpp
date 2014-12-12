@@ -17,8 +17,6 @@
 */
 //==============================================================================
 
-#include "Base58Data.h"
-
 namespace ripple {
 
 // Copyright (c) 2009-2010 Satoshi Nakamoto

@@ -18,9 +18,9 @@
 //==============================================================================
 
 #include <sodium.h>
-#include "RippleAddress.h"
 #include "../ripple_data/crypto/StellarPrivateKey.h"
 #include "../ripple_data/crypto/StellarPublicKey.h"
+#include "../../ripple/common/UnorderedContainers.h"
 
 namespace ripple {
 
@@ -123,7 +123,7 @@ uint160 RippleAddress::getNodeID () const
         return Hash160 (vchData);
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+		throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 Blob const& RippleAddress::getNodePublic () const
@@ -137,7 +137,7 @@ Blob const& RippleAddress::getNodePublic () const
         return vchData;
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -161,7 +161,7 @@ std::string RippleAddress::humanNodePublic () const
         return ToString ();
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -279,7 +279,7 @@ Blob const& RippleAddress::getNodePrivateData () const
         return vchData;
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -294,7 +294,7 @@ uint256 RippleAddress::getNodePrivate () const
         return uint256 (vchData);
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -309,7 +309,7 @@ std::string RippleAddress::humanNodePrivate () const
         return ToString ();
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -362,7 +362,7 @@ uint160 RippleAddress::getAccountID () const
         return Hash160 (vchData);
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -408,7 +408,7 @@ std::string RippleAddress::humanAccountID () const
     }
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -464,7 +464,7 @@ Blob const& RippleAddress::getAccountPublic () const
         return vchData;
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -482,7 +482,7 @@ std::string RippleAddress::humanAccountPublic () const
         return ToString ();
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -553,7 +553,7 @@ uint256 RippleAddress::getAccountPrivate () const
         return uint256 (vchData);
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -568,7 +568,7 @@ std::string RippleAddress::humanAccountPrivate () const
         return ToString ();
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -665,7 +665,7 @@ uint256 RippleAddress::getSeed() const
 		return uint256(vchData);
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -682,7 +682,7 @@ std::string RippleAddress::humanSeed () const
         return ToString ();
 
     default:
-        throw std::runtime_error (str (boost::format ("bad source: %d") % int (nVersion)));
+        throw std::runtime_error(("bad source: ") + std::to_string(int(nVersion)));
     }
 }
 
@@ -763,175 +763,4 @@ RippleAddress RippleAddress::createSeedGeneric (const std::string& strText)
 }
 
 //------------------------------------------------------------------------------
-
-
-class RippleAddress_test : public beast::unit_test::suite
-{
-	void testBase58(int type,char first)
-	{
-		Blob vchData(32);
-		for (int i = 0; i < 32; i++) vchData[i] = rand();
-		//Log::out() << vchData.size();
-
-		Blob vch(1, type);
-		vch.insert(vch.end(), vchData.begin(), vchData.end());
-		std::string human = Base58::encodeWithCheck(vch);
-		//Log::out() << type << " :  " << human;
-		expect(human[0] == first, human);
-	}
-
-    void add_l(unsigned char * const S)
-    {
-        static const unsigned char l[32] =
-            { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
-              0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
-              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 };
-        unsigned char c = 0U;
-        unsigned int  i;
-        unsigned int  s;
-
-        for (i = 0U; i < 32U; i++) {
-            s = S[i] + l[i] + c;
-            S[i] = (unsigned char) s;
-            c = (s >> 8) & 1;
-        }
-    }
-
-public:
-    void run()
-    {
-		testBase58(RippleAddress::VER_NODE_PUBLIC, 'n');
-		testBase58(RippleAddress::VER_NODE_PRIVATE, 'h');
-		testBase58(RippleAddress::VER_ACCOUNT_PUBLIC, 'p');
-		testBase58(RippleAddress::VER_ACCOUNT_PRIVATE, 'h');
-		testBase58(RippleAddress::VER_SEED, 's');
-
-		// check pass phrase
-		std::string strPass("masterpassphrase");
-		std::string strBase58Seed("s3q5ZGX2ScQK2rJ4JATp7rND6X5npG3De8jMbB7tuvm2HAVHcCN");
-		std::string strBase58NodePublic("nfbbWHgJqzqfH1cfRpMdPRkJ19cxTsdHkBtz1SLJJQfyf9Ax6vd");
-		std::string strBase58AccountPublic("pGreoXKYybde1keKZwDCv8m5V1kT6JH37pgnTUVzdMkdygTixG8");
-			
-		AccountPrivateKey accountPrivateKey;
-		NodePrivateKey nodePrivateKey;
-
-		accountPrivateKey.fromPassPhrase(strPass);
-		nodePrivateKey.fromPassPhrase(strPass);
-
-		expect(accountPrivateKey.base58Seed() == "s3q5ZGX2ScQK2rJ4JATp7rND6X5npG3De8jMbB7tuvm2HAVHcCN", accountPrivateKey.base58Seed());
-		expect(accountPrivateKey.base58AccountID() == "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb", accountPrivateKey.base58AccountID());
-		expect(accountPrivateKey.base58PublicKey() == strBase58AccountPublic, accountPrivateKey.base58PublicKey());
-		expect(nodePrivateKey.base58PublicKey() == strBase58NodePublic, nodePrivateKey.base58PublicKey());
-
-
-		Blob sig;
-		uint256 message;
-		accountPrivateKey.sign(message, sig);
-
-		StellarPublicKey publicKey(accountPrivateKey.getPublicKey(), RippleAddress::VER_NODE_PUBLIC);
-		expect(publicKey.verifySignature(message, sig), "Signature didn't verify");
-		expect(publicKey.getAccountID() == accountPrivateKey.getAccountID(), "Account Id's mis match");
-		expect(publicKey.base58AccountID() == accountPrivateKey.base58AccountID(), "Account Id's mis match");
-
-        Blob nonCanonicalSig(sig);
-        add_l(nonCanonicalSig.data() + 32);
-        expect(sig != nonCanonicalSig, "Non-canonical signature equal to canonical signature");
-        expect(crypto_sign_verify_detached(nonCanonicalSig.data(),
-                                           message.data(), message.bytes,
-                                           publicKey.vchData.data()) == 0,
-               "Non-canonical signature didn't verify (ignoring canonical-ness)");
-        expect(!publicKey.verifySignature(message, nonCanonicalSig), "Non-canonical signature verified");
-		
-		AccountPrivateKey privateKey2;
-		privateKey2.fromString(strBase58Seed); // key from base58seed
-		expect(privateKey2.base58Seed() == "s3q5ZGX2ScQK2rJ4JATp7rND6X5npG3De8jMbB7tuvm2HAVHcCN", privateKey2.base58Seed());
-		expect(privateKey2.base58AccountID() == "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb", privateKey2.base58AccountID());
-		expect(privateKey2.base58PublicKey() == strBase58AccountPublic, privateKey2.base58PublicKey());
-		privateKey2.sign(message, sig);
-		expect(publicKey.verifySignature(message, sig), "Signature didn't verify"); // check with the previous pubkey
-
-		// check random
-
-		/// ======= OLD ====
-
-		// Construct a seed.
-		RippleAddress naSeed;
-
-		expect(naSeed.setSeedGeneric("masterpassphrase"));
-		expect(naSeed.humanSeed() == "s3q5ZGX2ScQK2rJ4JATp7rND6X5npG3De8jMbB7tuvm2HAVHcCN", naSeed.humanSeed());
-
-		// Create node public/private key pair
-		RippleAddress naNodePublic = RippleAddress::createNodePublic(naSeed);
-		expect(naNodePublic.verifySignature(message, sig), "Signature didn't verify");
-		expect(naNodePublic.humanNodePublic() == strBase58NodePublic, naNodePublic.humanNodePublic());
-
-		naNodePublic.setNodePublic(strBase58NodePublic);
-		expect(naNodePublic.verifySignature(message, sig), "Signature didn't verify");
-		expect(naNodePublic.humanNodePublic() == strBase58NodePublic, naNodePublic.humanNodePublic());
-
-		RippleAddress naAccountPublic = RippleAddress::createAccountPublic(naSeed);
-		expect(naAccountPublic.humanAccountID() == "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb", naAccountPublic.humanAccountID());
-		expect(naAccountPublic.verifySignature(message, sig), "Signature didn't verify");
-		expect(naAccountPublic.humanAccountPublic() == strBase58AccountPublic, naAccountPublic.humanAccountPublic());
-
-		naAccountPublic.setAccountPublic(strBase58AccountPublic);
-		expect(naAccountPublic.humanAccountID() == "ganVp9o5emfzpwrG5QVUXqMv8AgLcdvySb", naAccountPublic.humanAccountID());
-		expect(naAccountPublic.verifySignature(message, sig), "Signature didn't verify");
-		expect(naAccountPublic.humanAccountPublic() == strBase58AccountPublic, naAccountPublic.humanAccountPublic());
-
-		Blob rippleSig;
-		RippleAddress naAccountPrivate = RippleAddress::createAccountPrivate(naSeed);
-		naAccountPrivate.sign(message, rippleSig);
-		expect(rippleSig==sig, "Signature don't match");
-
-		RippleAddress naNodePrivate = RippleAddress::createNodePrivate(naSeed);
-		naNodePrivate.sign(message, rippleSig);
-		expect(rippleSig == sig, "Signature don't match");
-
-
-		std::string strPrivateKey("ssQMHypYAPSPgniSyvJQccuL1dJUbXJWVgAPV5QcAuBVEWsZTVQwffsnwTY6Mivoy3NRSVR28ZaCW74F67VSq4VRC4zY1XR");
-		expect(naNodePrivate.humanNodePrivate() == strPrivateKey, naNodePrivate.humanNodePrivate());
-		
-		expect(naNodePrivate.setNodePrivate(strPrivateKey),"couldn't create private node");
-		expect(naNodePrivate.humanNodePrivate() == strPrivateKey, naNodePrivate.humanNodePrivate());
-		naNodePrivate.sign(message, rippleSig);
-		expect(rippleSig == sig, "Signature don't match");
-
-
-
-
-		/*
-		RippleAddress naNodePrivate = RippleAddress::createNodePrivate(naSeed);
-		expect(naNodePrivate.humanNodePrivate() == "pnen77YEeUd4fFKG7iycBWcwKpTaeFRkW2WFostaATy1DSupwXe", naNodePrivate.humanNodePrivate());
-
-		// Check node signing.
-		Blob vucTextSrc = strCopy("Hello, nurse!");
-		uint256 uHash = Serializer::getSHA512Half(vucTextSrc);
-		Blob vucTextSig;
-
-		naNodePrivate.signNodePrivate(uHash, vucTextSig);
-		expect(naNodePublic.verifyNodePublic(uHash, vucTextSig, ECDSA::strict), "Verify failed.");
-		*/
-
-
-       
-       
-    }
-};
-
-//------------------------------------------------------------------------------
-
-class RippleIdentifier_test : public beast::unit_test::suite
-{
-public:
-    void run ()
-    {
-
-    }
-};
-
-BEAST_DEFINE_TESTSUITE(RippleAddress,ripple_data,ripple);
-BEAST_DEFINE_TESTSUITE(RippleIdentifier,ripple_data,ripple);
-
 } // ripple

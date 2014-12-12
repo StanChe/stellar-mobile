@@ -30,6 +30,31 @@ namespace stellar_mobile
 	    return strbuf.GetString();
 	}
 
+	std::vector<std::string> & Helper::split(const std::string &s, std::string& delims, int index, std::vector<std::string> &elems) {
+		if (delims.empty())
+		{
+			if (!s.empty())
+				elems.push_back(s);
+			return elems;
+		}
+		std::stringstream ss(s);
+		std::string item;
+		while (std::getline(ss, item, delims[index])) {
+			if (item.empty())
+				continue;
+			if (index == delims.length() - 1)
+				elems.push_back(item);
+			else split(item, delims, index + 1, elems);
+		}
+		return elems;
+	}
+
+	std::vector<std::string> Helper::split(const std::string &s, std::string delims) {
+		std::vector<std::string> elems;
+		split(s, delims, 0, elems);
+		return elems;
+	}
+
 	std::string Helper::StringFormat(std::string rawFormat, std::string* params, __int32 paramsNum)
 	{
 		__int64 buffSize = rawFormat.length();

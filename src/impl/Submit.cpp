@@ -8,9 +8,9 @@
 #include "../Utils/JSS.h"
 #include "../Utils/CurlReader.h"
 
+#include "../ripple_basics/ripple_basics.h"
 #include <iostream>
 #include "../Utils/Config.h"
-#include "../ripple_basics/utility/StringUtilities.h"
 
 namespace stellar_mobile
 {
@@ -32,9 +32,7 @@ namespace stellar_mobile
 		rapidjson::Value& param = params[0];
 		if (!param.HasMember(JSS::PARAM_TX_BLOB))
 		{
-			std::string errorParams [1]= {JSS::PARAM_TX_BLOB};
-			ErrorsContainer::Errors.get(INVALID_JSON, errorParams, 1).InjectTo(result, allocator);
-			return;
+			return doTransactionSign(request, result, allocator);
 		}
 		std::pair<ripple::Blob, bool> ret(ripple::strUnHex(param[JSS::PARAM_TX_BLOB].GetString()));
 

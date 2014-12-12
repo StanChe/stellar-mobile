@@ -2,11 +2,13 @@
 #include "Helper.h"
 
 #include <fstream>
+#include "../ripple_data/protocol/HashPrefix.h"
 
 namespace stellar_mobile 
 {
 	const char* Config::Data::CONFIG_FILE_NAME = "stellar-mobile.cfg";
 	std::string Config::Data::StellardAddress;
+	std::uint32_t Config::Data::SIGN_TRANSACTION = ripple::HashPrefix::txSign;
 	Config::Data::Map Config::Data::map;
 	Config::Data Config::DataContainer = Data();
 	Config::Data::Data()

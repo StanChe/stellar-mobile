@@ -16,8 +16,6 @@
     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 //==============================================================================
-#include "../api/base_uint.h"
-#include "../api/HashMaps.h"
 
 namespace ripple {
 

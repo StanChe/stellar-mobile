@@ -17,77 +17,306 @@
 */
 //==============================================================================
 
-#include "StringUtilities.h";
-#include <string>
+
 #include <cstdarg>
 
 namespace ripple {
 
+// VFALCO TODO Replace these with something more robust and without macros.
+//
+#if ! BEAST_MSVC
+#define _vsnprintf(a,b,c,d) vsnprintf(a,b,c,d)
+#endif
 
-	// NIKB NOTE: This function is only used by strUnHex (const std::string& strSrc)
-	// which results in a pointless copy from std::string into std::vector. Should
-	// we just scrap this function altogether?
-	int strUnHex (std::string& strDst, const std::string& strSrc)
-	{
-		std::string tmp;
+std::string strprintf (const char* format, ...)
+{
+    char buffer[50000];
+    char* p = buffer;
+    int limit = sizeof (buffer);
+    int ret;
 
-		tmp.reserve ((strSrc.size () + 1) / 2);
+    for (;;)
+    {
+        va_list arg_ptr;
+        va_start (arg_ptr, format);
+        ret = _vsnprintf (p, limit, format, arg_ptr);
+        va_end (arg_ptr);
 
-		auto iter = strSrc.cbegin ();
+        if (ret >= 0 && ret < limit)
+            break;
 
-		if (strSrc.size () & 1)
-		{
-			int c = charUnHex (*iter);
+        if (p != buffer)
+            delete[] p;
 
-			if (c < 0)
-				return -1;
+        limit *= 2;
+        p = new char[limit];
 
-			tmp.push_back(c);
-			++iter;
-		}
+        if (p == nullptr)
+            throw std::bad_alloc ();
+    }
 
-		while (iter != strSrc.cend ())
-		{
-			int cHigh = charUnHex (*iter);
-			++iter;
+    std::string str (p, p + ret);
 
-			if (cHigh < 0)
-				return -1;
+    if (p != buffer)
+        delete[] p;
 
-			int cLow = charUnHex (*iter);
-			++iter;
+    return str;
+}
 
-			if (cLow < 0)
-				return -1;
+// NIKB NOTE: This function is only used by strUnHex (const std::string& strSrc)
+// which results in a pointless copy from std::string into std::vector. Should
+// we just scrap this function altogether?
+int strUnHex (std::string& strDst, const std::string& strSrc)
+{
+    std::string tmp;
 
-			tmp.push_back (static_cast<char>((cHigh << 4) | cLow));
-		}
+    tmp.reserve ((strSrc.size () + 1) / 2);
 
-		strDst = std::move(tmp);
+    auto iter = strSrc.cbegin ();
 
-		return strDst.size ();
-	}
+    if (strSrc.size () & 1)
+    {
+        int c = charUnHex (*iter);
 
+        if (c < 0)
+            return -1;
 
-	std::pair<Blob, bool> strUnHex (const std::string& strSrc)
-	{
-		std::string strTmp;
+        tmp.push_back(c);
+        ++iter;
+    }
 
-		if (strUnHex (strTmp, strSrc) == -1)
-			return std::make_pair (Blob (), false);
+    while (iter != strSrc.cend ())
+    {
+        int cHigh = charUnHex (*iter);
+        ++iter;
 
-		return std::make_pair(strCopy (strTmp), true);
-	}
+        if (cHigh < 0)
+            return -1;
 
-	Blob strCopy (const std::string& strSrc)
-	{
-		Blob vucDst;
+        int cLow = charUnHex (*iter);
+        ++iter;
 
-		vucDst.resize (strSrc.size ());
+        if (cLow < 0)
+            return -1;
 
-		std::copy (strSrc.begin (), strSrc.end (), vucDst.begin ());
+        tmp.push_back (static_cast<char>((cHigh << 4) | cLow));
+    }
 
-		return vucDst;
-	}
+    strDst = std::move(tmp);
 
+    return strDst.size ();
+}
+
+std::pair<Blob, bool> strUnHex (const std::string& strSrc)
+{
+    std::string strTmp;
+
+    if (strUnHex (strTmp, strSrc) == -1)
+        return std::make_pair (Blob (), false);
+
+    return std::make_pair(strCopy (strTmp), true);
+}
+
+uint64_t uintFromHex (const std::string& strSrc)
+{
+    uint64_t uValue (0);
+
+    if (strSrc.size () > 16)
+        throw std::invalid_argument("overlong 64-bit value");
+
+    for (auto c : strSrc)
+    {
+        int ret = charUnHex (c);
+
+        if (ret == -1)
+            throw std::invalid_argument("invalid hex digit");
+
+        uValue = (uValue << 4) | ret;
+    }
+
+    return uValue;
+}
+
+//
+// Misc string
+//
+
+Blob strCopy (const std::string& strSrc)
+{
+    Blob vucDst;
+
+    vucDst.resize (strSrc.size ());
+
+    std::copy (strSrc.begin (), strSrc.end (), vucDst.begin ());
+
+    return vucDst;
+}
+
+std::string strCopy (Blob const& vucSrc)
+{
+    std::string strDst;
+
+    strDst.resize (vucSrc.size ());
+
+    std::copy (vucSrc.begin (), vucSrc.end (), strDst.begin ());
+
+    return strDst;
+
+}
+
+extern std::string urlEncode (const std::string& strSrc)
+{
+    std::string strDst;
+    int         iOutput = 0;
+    int         iSize   = strSrc.length ();
+
+    strDst.resize (iSize * 3);
+
+    for (int iInput = 0; iInput < iSize; iInput++)
+    {
+        unsigned char c = strSrc[iInput];
+
+        if (c == ' ')
+        {
+            strDst[iOutput++]   = '+';
+        }
+        else if (isalnum (c))
+        {
+            strDst[iOutput++]   = c;
+        }
+        else
+        {
+            strDst[iOutput++]   = '%';
+            strDst[iOutput++]   = charHex (c >> 4);
+            strDst[iOutput++]   = charHex (c & 15);
+        }
+    }
+
+    strDst.resize (iOutput);
+
+    return strDst;
+}
+
+//
+// IP Port parsing
+//
+// <-- iPort: "" = -1
+// VFALCO TODO Make this not require boost... and especially boost::asio
+//bool parseIpPort (const std::string& strSource, std::string& strIP, int& iPort)
+//{
+//    boost::smatch   smMatch;
+//    bool            bValid  = false;
+//
+//    static boost::regex reEndpoint ("\\`\\s*(\\S+)(?:\\s+(\\d+))?\\s*\\'");
+//
+//    if (boost::regex_match (strSource, smMatch, reEndpoint))
+//    {
+//        boost::system::error_code   err;
+//        std::string                 strIPRaw    = smMatch[1];
+//        std::string                 strPortRaw  = smMatch[2];
+//
+//        boost::asio::ip::address    addrIP      = boost::asio::ip::address::from_string (strIPRaw, err);
+//
+//        bValid  = !err;
+//
+//        if (bValid)
+//        {
+//            strIP   = addrIP.to_string ();
+//            iPort   = strPortRaw.empty () ? -1 : beast::lexicalCastThrow <int> (strPortRaw);
+//        }
+//    }
+//
+//    return bValid;
+//}
+
+// VFALCO TODO Callers should be using beast::URL and beast::ParsedURL, not this home-brew.
+//
+//bool parseUrl (const std::string& strUrl, std::string& strScheme, std::string& strDomain, int& iPort, std::string& strPath)
+//{
+//    // scheme://username:password@hostname:port/rest
+//    static boost::regex reUrl ("(?i)\\`\\s*([[:alpha:]][-+.[:alpha:][:digit:]]*)://([^:/]+)(?::(\\d+))?(/.*)?\\s*?\\'");
+//    boost::smatch   smMatch;
+//
+//    bool    bMatch  = boost::regex_match (strUrl, smMatch, reUrl);          // Match status code.
+//
+//    if (bMatch)
+//    {
+//        std::string strPort;
+//
+//        strScheme   = smMatch[1];
+//        strDomain   = smMatch[2];
+//        strPort     = smMatch[3];
+//        strPath     = smMatch[4];
+//
+//        boost::algorithm::to_lower (strScheme);
+//
+//        iPort   = strPort.empty () ? -1 : beast::lexicalCast <int> (strPort);
+//        // Log::out() << strUrl << " : " << bMatch << " : '" << strDomain << "' : '" << strPort << "' : " << iPort << " : '" << strPath << "'";
+//    }
+//
+//    // Log::out() << strUrl << " : " << bMatch << " : '" << strDomain << "' : '" << strPath << "'";
+//
+//    return bMatch;
+//}
+
+//
+// Quality parsing
+// - integers as is.
+// - floats multiplied by a billion
+//bool parseQuality (const std::string& strSource, std::uint32_t& uQuality)
+//{
+//    uQuality    = beast::lexicalCast <std::uint32_t> (strSource);
+//
+//    if (!uQuality)
+//    {
+//        float   fQuality    = beast::lexicalCast <float> (strSource);
+//
+//        if (fQuality)
+//            uQuality    = (std::uint32_t) (QUALITY_ONE * fQuality);
+//    }
+//
+//    return !!uQuality;
+//}
+
+beast::StringPairArray parseDelimitedKeyValueString (beast::String parameters,
+                                                   beast::beast_wchar delimiter)
+{
+    beast::StringPairArray keyValues;
+
+    while (parameters.isNotEmpty ())
+    {
+        beast::String pair;
+
+        {
+            int const delimiterPos = parameters.indexOfChar (delimiter);
+
+            if (delimiterPos != -1)
+            {
+                pair = parameters.substring (0, delimiterPos);
+
+                parameters = parameters.substring (delimiterPos + 1);
+            }
+            else
+            {
+                pair = parameters;
+
+                parameters = beast::String::empty;
+            }
+        }
+
+        int const equalPos = pair.indexOfChar ('=');
+
+        if (equalPos != -1)
+        {
+            beast::String const key = pair.substring (0, equalPos);
+            beast::String const value = pair.substring (equalPos + 1, pair.length ());
+
+            keyValues.set (key, value);
+        }
+    }
+
+    return keyValues;
+}
+
+//------------------------------------------------------------------------------
 } // ripple

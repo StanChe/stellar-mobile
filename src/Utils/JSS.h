@@ -29,6 +29,10 @@ namespace stellar_mobile
 		static const char* PARAMS_TX_JSON_SEQUENCE;
 		static const char* ACCOUNT_DATA_FIELD;
 		static const char* ACCOUNT_DATA_SEQUENCE;
+		static const char* PARAM_DEBUG_SIGNING;
+		static const char* TX_UNSIGNED;
+		static const char* TX_SIGNING_HASH;
+		static const char* PARAM_TX_JSON_FLAGS;
 	};
 }
 #endif

@@ -30,8 +30,6 @@
 #include "../../ripple/types/api/RipplePublicKey.h"
 #include "../../ripple/types/api/RipplePublicKeyHash.h"
 #include "../../ripple/sslutil/api/ECDSACanonical.h"
-#include "../../ripple_basics/utility/StringUtilities.h"
-
 
 namespace ripple {
 

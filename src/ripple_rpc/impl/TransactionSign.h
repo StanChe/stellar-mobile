@@ -25,7 +25,7 @@
 namespace ripple {
 	namespace RPC {
 
-		void transactionSign (rapidjson::Value& params, rapidjson::Value& result, rapidjson::MemoryPoolAllocator<>& allocator, bool bFailHard);
+		void transactionSign (rapidjson::Document& params, rapidjson::Value& result, rapidjson::MemoryPoolAllocator<>& allocator, bool bFailHard);
 		void autofill_fee(rapidjson::Value& request, rapidjson::Value& result, bool admin);
 		int64_t GetSequence(std::string account);
 	}
